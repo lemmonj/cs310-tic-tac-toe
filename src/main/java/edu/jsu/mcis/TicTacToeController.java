@@ -1,10 +1,18 @@
 package edu.jsu.mcis;
 
-public class TicTacToeController {
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+//import edu.jsu.mcis.TicTacToeModel.Mark;
+//import edu.jsu.mcis.TicTacToeModel.Result;
+
+public class TicTacToeController implements ActionListener {
 
     private final TicTacToeModel model;
     private final TicTacToeView view;
-    
+
     /* CONSTRUCTOR */
 
     public TicTacToeController(int width) {
@@ -12,35 +20,43 @@ public class TicTacToeController {
         /* Initialize model, view, and width */
 
         model = new TicTacToeModel(width);
-        view = new TicTacToeView();
+        view = new TicTacToeView(this,width);
         
     }
 
-    public void start() {
     
-        /* MAIN LOOP (repeats until game is over) */
 
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
+    public String getMarkAsString(int row, int col) {         
+        return (model.getMark(row, col).toString());
+    }
+    
+    public TicTacToeView getView() {           
+        return view; 
+    }
 
-        // INSERT YOUR CODE HERE
-        while (! (model.isGameover())) {
-            view.showBoard(model.toString());
-            TicTacToeMove move = view.getNextMove(true);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        JButton button = (JButton)(e.getSource());
+        int row = (int) (button.getName().charAt(6)) - 48;
+        int col = (int) (button.getName().charAt(7)) - 48;
             
-            boolean result = model.makeMark(move.getRow(),move.getCol());
-
-            if (result == false) {
-                view.showInputError();
+        if (!model.isGameover()) {
+            
+            model.makeMark(row,col);
+            button.setText(model.getMark(row,col).toString());
+        
+            if (model.getResult().toString() == "X") {
+            view.showResult(model.getResult().toString().toUpperCase());
             }
-        }       
-        /* After the game is over, show the final board and the winner */
-
-        view.showBoard(model.toString());
-
-        view.showResult(model.getResult().toString());
+            else if( model.getResult().toString() == "O"){
+            view.showResult(model.getResult().toString().toUpperCase());
+            }
+            else if (model.getResult().toString() == "TIE") {
+            view.showResult(model.getResult().toString().toUpperCase());
+            }
+        
+        }
         
     }
 
