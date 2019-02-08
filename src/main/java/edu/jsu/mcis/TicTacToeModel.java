@@ -76,8 +76,8 @@ public class TicTacToeModel {
         /* Initialize board by filling every square with empty marks */
         
         // INSERT YOUR CODE HERE
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.width; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
                 board[i][j] = Mark.EMPTY;
             }
         }
@@ -122,7 +122,7 @@ public class TicTacToeModel {
                 return true;
             }
         }
-        return false; // remove this line later!
+        return false; 
         
     }
 	
@@ -175,7 +175,7 @@ public class TicTacToeModel {
             return Result.NONE;
         }
         
-        return null; // remove this line later!
+
         
     }
 	
@@ -185,117 +185,57 @@ public class TicTacToeModel {
            winner */
         
         // INSERT YOUR CODE HERE
-        boolean isWin = false;
-        if (mark == Mark.X){
-            if (isWin == false){
-                for (int i = 0; i < width; i++){
-                    int total = 0;
-                    for (int j = 0; j < width; j++){
-                        if (board[i][j] == Mark.X ){
-                            total = total + 1;
-                            if (total == width){
-                            isWin = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else if(isWin == false){
-                for (int i = 0; i < width; i++){
-                    int total = 0;
-                    for (int j = 0; j < width; j++){
-                        if (board[j][i] == Mark.X ){
-                            total = total + 1;
-                            if (total == width){
-                            isWin = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else if (isWin == false){
-                int total = 0;
-                for (int i = 0; i < width;i++){
-                    if (board[i][i] == Mark.X){
-                        total = total + 1;
-                        if (total == width){
-                            isWin = true;
-                        }
-                    }
-                } 
-            }
-            else if (isWin == false){
-                int total = 0;
-                for (int i = 0; i < width; i++){
-                    if(board[i][width-i-1] == Mark.X){
-                        total = total + 1;
-                        if (total == width){
-                            isWin = true;
-                        }
-                    }
-                }
-            }
-            else{
-                isWin = false;
-            }
+        int total = 0;
 
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < width; j++) {
+
+                if (getMark(i,j) == mark) {
+                    total = total + 1;
+                }
+
+                if (total == width) {
+                    return true;
+                }
+                
+            }
+            total = 0;
         }
-        if (mark == Mark.O){
-            if (isWin == false){
-                for (int i = 0; i < width; i++){
-                    int total = 0;
-                    for (int j = 0; j < width; j++){
-                        if (board[i][j] == Mark.O ){
-                            total = total + 1;
-                            if (total == width){
-                            isWin = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else if(isWin == false){
-                for (int i = 0; i < width; i++){
-                    int total = 0;
-                    for (int j = 0; j < width; j++){
-                        if (board[j][i] == Mark.O ){
-                            total = total + 1;
-                            if (total == width){
-                            isWin = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else if (isWin == false){
-                int total = 0;
-                for (int i = 0; i < width;i++){
-                    if (board[i][i] == Mark.O){
-                        total = total + 1;
-                        if (total == width){
-                            isWin = true;
-                        }
-                    }
-                } 
-            }
-            else if (isWin == false){
-                int total = 0;
-                for (int i = 0; i < width; i++){
-                    if(board[i][width-i-1] == Mark.O){
-                        total = total + 1;
-                        if (total == width){
-                            isWin = true;
-                        }
-                    }
-                }
-            }
-            else{
-                isWin = false;
-            }
+        for (int i = 0; i< width; i++) {
+            for (int j = 0;j < width; j++) {
 
+                if (getMark(j,i) == mark) {
+                    total = total + 1;
+                }
+
+                if (total == width) {
+                    return true;
+                }
+            }
+            total = 0;
         }
-        return false; // remove this line later!
+        for (int i = 0; i < width; i++) {
+            
+            if (getMark(i,i) == mark) {
+                total = total  + 1;
+            }
 
+            if (total == width){
+                return true;
+            }
+        }
+        total = 0;
+        for (int i = 0; i < width; i++) {
+            
+            if (getMark(i,width - 1 - i) == mark) {
+                total = total  + 1;
+            }
+            if (total == width) {
+                return true;
+            }
+        }
+         total = 0;
+        return false;
     }
 	
     private boolean isTie() {
@@ -303,44 +243,22 @@ public class TicTacToeModel {
         /* Check the squares of the board to see if the game is a tie */
         
         // INSERT YOUR CODE HERE
-        boolean tie = false;
-        int counter = 0;
-        int spaces = width*width;
-        if (isMarkWin(mark.X) == false){
-            for (int i = 0; i < width; i++){
-                for (int j = 0; j < width; j++){
-                    if ( board[i][j] == Mark.X){
-                        counter = counter + 1;
-                    }
-                    else if (board[i][j] == Mark.O){
-                        counter = counter = 1;
-                    }
-                }
-            }
-            if (counter == spaces){
-                tie = true;
-            }
-        }
-        else if(isMarkWin(Mark.O)){
-            for (int i = 0; i < width; i++){
-                for (int j = 0; j < width; j++){
-                    if ( board[i][j] == Mark.X){
-                        counter = counter + 1;
-                    }
-                    else if (board[i][j] == Mark.O){
-                        counter = counter = 1;
-                    }
-                }
-            }
-            if (counter == spaces){
-                tie = true;
-            }            
-        }
-        else {
-            tie = false;
-        }
-        return tie;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
 
+                if (getMark(i,j) == Mark.EMPTY) {
+                    return false;
+                }
+            }
+        }
+
+        if (isMarkWin(Mark.X) || isMarkWin(Mark.O)) {
+            return false;
+        }
+
+        else {
+            return true;
+        }
         
     }
 
@@ -380,7 +298,7 @@ public class TicTacToeModel {
 
         for (int i = 0; i < width; i++) {
 
-            output.append(row + " ");
+            output.append(i + " ");
 
             for (int j = 0; j < width; j++) {
                 output.append(board[i][j]);
